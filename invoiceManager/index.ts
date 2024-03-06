@@ -1,4 +1,4 @@
-import { Invoice } from "../invoices";
+import { Invoice, ProductInvoice } from "../invoices";
 
 export class InvoiceManager {
   protected invoices: Invoice[];
@@ -34,4 +34,23 @@ export class InvoiceManager {
     this.invoices = this.invoices.filter((i: Invoice) => i.getID() !== id);
     return this;
   }
+
+  calTotalInvoice(): InvoiceTotal[] {
+    return this.invoices.map((i: Invoice) => {
+      const res: InvoiceTotal = {
+        ID: i.getID(),
+        total: i
+          .getProducts()
+          .reduce((prev: number, pDetail: ProductInvoice) => {
+            return (prev += pDetail.price * pDetail.quantity);
+          }, 0),
+      };
+      return res;
+    });
+  }
 }
+
+export type InvoiceTotal = {
+  ID: string;
+  total: number;
+};

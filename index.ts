@@ -1,6 +1,7 @@
 import CreateID from "./base/id_service";
 import { Inventory } from "./inventory/Inventory";
 import { InvoiceManager } from "./invoiceManager";
+import { Invoice, ProductInvoice } from "./invoices";
 import { Meat, MeatDto } from "./product/meat";
 import { Vegetable } from "./product/vegetable";
 
@@ -134,4 +135,25 @@ inventory.addProduct(
   )
 );
 
-console.log(inventory.getProduct());
+const prefixIv = "IVC";
+const decIv = 3;
+
+const Invoice1 = new Invoice(
+  CreateID(
+    decIv,
+    prefixIv,
+    invoiceManger.getInvoices(),
+    invoiceManger.getLastIndex()
+  )
+);
+
+Invoice1.addProduct(inventory.getQuantityOfProduct("PRD001", 2))
+  .addProduct(inventory.getQuantityOfProduct("PRD001", 3))
+  .addProduct(inventory.getQuantityOfProduct("PRD001", 12))
+  .addProduct(inventory.getQuantityOfProduct("PRD002", 0));
+
+invoiceManger.addInvoice(Invoice1);
+
+console.log(invoiceManger.calTotalInvoice());
+
+// console.log(inventory.getProduct());

@@ -4,10 +4,10 @@ export class Invoice {
   protected ID: string;
   protected total: number;
   protected tax: number;
-  protected products: Product[];
+  protected products: ProductInvoice[];
 
-  constructor() {
-    this.ID = "";
+  constructor(ID: string) {
+    this.ID = ID;
     this.total = 0;
     this.tax = 0;
     this.products = [];
@@ -33,28 +33,42 @@ export class Invoice {
     return this;
   }
 
-  addProduct(product: Product): void {
-    this.products.push(product);
+  addProduct(product: ProductInvoice | undefined): this {
+    if (product === undefined) return this;
+    if (product.quantity < 0 || Object.keys(product).length === 0) return this;
+    const indexOfProduct = this.products.findIndex(
+      (p: ProductInvoice) => p.ID === product.ID
+    );
+    if (indexOfProduct !== -1) {
+      this.products[indexOfProduct].quantity += product.quantity;
+    } else {
+      this.products.push(product);
+    }
+    return this;
   }
-  removeProduct(product: Product): void {
-    this.products = this.products.filter((p) => p.getId() !== product.getId());
+  removeProduct(id: string): this {
+    this.products = this.products.filter((p) => id !== p.ID);
+    return this;
   }
-  updateProduct(pro: Product): void {
-    this.products = this.products.map((i: Product) => {
-      if (i.getId() === pro.getId()) {
+  updateProduct(pro: ProductInvoice): this {
+    this.products = this.products.map((i: ProductInvoice) => {
+      if (i.ID === pro.ID) {
         return pro;
       }
       return i;
     });
+    return this;
   }
 
   setTax(tax: number): this {
     this.tax = tax;
     return this;
   }
-
-  calTotal(): this {
-    this.total = this.products.reduce((p) => p, 0);
-    return this;
-  }
 }
+
+export type ProductInvoice = {
+  name: string;
+  ID: string;
+  price: number;
+  quantity: number;
+};
