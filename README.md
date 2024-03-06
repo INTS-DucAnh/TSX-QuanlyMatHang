@@ -16,7 +16,10 @@
     -   Xóa sản phẩm khỏi kho
     -   Cập nhật thông tin sản phẩm
 3.  Một số loại sản phẩm có thể xuất hiện trong cửa hàng bao gồm:
-    -      
+    -   Rau củ
+    -   Thịt
+    -   Đồ ăn vặt
+    -   Đồ hộp
 
 ## Phần 2: Quản lý Hoá đơn
 
