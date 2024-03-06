@@ -1,8 +1,10 @@
+import { Product } from "../product";
+
 export class Invoice {
   protected ID: string;
   protected total: number;
   protected tax: number;
-  protected products: any[];
+  protected products: Product[];
 
   constructor() {
     this.ID = "";
@@ -31,9 +33,19 @@ export class Invoice {
     return this;
   }
 
-  setProducts(products: any[]): this {
-    this.products = products;
-    return this;
+  addProduct(product: Product): void {
+    this.products.push(product);
+  }
+  removeProduct(product: Product): void {
+    this.products = this.products.filter((p) => p.getId() !== product.getId());
+  }
+  updateProduct(pro: Product): void {
+    this.products = this.products.map((i: Product) => {
+      if (i.getId() === pro.getId()) {
+        return pro;
+      }
+      return i;
+    });
   }
 
   setTax(tax: number): this {

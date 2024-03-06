@@ -1,3 +1,6 @@
+import { Invoice } from "../invoices";
+import { Product } from "../product";
+
 const repeat = (stringR: string, count: number): string => {
   let res = "";
   if (count < 0) return "";
@@ -9,7 +12,7 @@ const repeat = (stringR: string, count: number): string => {
 export default function CreateID(
   decimal: number = 3,
   prefix: string = "",
-  baseArr: any[] = [],
+  baseArr: Product[] | Invoice[] = [],
   lastIndex: number = 0
 ): string {
   const newIndex = lastIndex + 1;
@@ -22,10 +25,11 @@ export default function CreateID(
   let arr = [...baseArr];
   let res = "";
   let lastElement = arr.pop();
-  res = `${prefix.toUpperCase()}${repeat(
-    defaultDecimal,
-    decimal - newIndex.toString().length
-  )}${lastElement.ID}`;
+  if (lastElement)
+    res = `${prefix.toUpperCase()}${repeat(
+      defaultDecimal,
+      decimal - newIndex.toString().length
+    )}${newIndex}`;
 
   return res;
 }
